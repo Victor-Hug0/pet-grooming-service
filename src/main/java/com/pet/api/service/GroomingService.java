@@ -1,9 +1,6 @@
 package com.pet.api.service;
 
-import com.pet.api.domain.grooming.Grooming;
-import com.pet.api.domain.grooming.GroomingMapper;
-import com.pet.api.domain.grooming.GroomingRequestDTO;
-import com.pet.api.domain.grooming.GroomingResponseDTO;
+import com.pet.api.domain.grooming.*;
 import com.pet.api.domain.pet.Pet;
 import com.pet.api.exception.GroomingNotFoundException;
 import com.pet.api.repository.GroomingRepository;
@@ -34,6 +31,7 @@ public class GroomingService {
             grooming.setDescription(groomingDTO.description());
             grooming.setDateTime(groomingDTO.localDateTime());
             grooming.setPet(pet);
+            grooming.setStatus(Status.AGENDADO);
 
             return groomingRepository.save(grooming);
         }
@@ -52,5 +50,29 @@ public class GroomingService {
 
     public Grooming findGroomingById(Long id) {
         return groomingRepository.findById(id).orElseThrow(() -> new GroomingNotFoundException(id));
+    }
+
+    public GroomingResponseDTO changeStatus(Long id) {
+        Grooming grooming = findGroomingById(id);
+
+        if (grooming.getStatus().equals(Status.AGENDADO)){
+            grooming.setStatus(Status.CONCLUIDO);
+            groomingRepository.save(grooming);
+            return GroomingMapper.toGroomingDTO(grooming);
+        }
+
+        return null;
+    }
+
+    public GroomingResponseDTO changeDate(Long id, GroomingUpdateDTO groomingUpdateDTO) {
+        Grooming grooming = findGroomingById(id);
+
+        if (isAvailable(groomingUpdateDTO.localDateTime())){
+            grooming.setDateTime(groomingUpdateDTO.localDateTime());
+            groomingRepository.save(grooming);
+            return GroomingMapper.toGroomingDTO(grooming);
+        }
+
+        return null;
     }
 }

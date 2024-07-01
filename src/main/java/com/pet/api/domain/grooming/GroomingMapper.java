@@ -12,6 +12,7 @@ public class GroomingMapper {
                 grooming.getServiceType(),
                 grooming.getPrice(),
                 grooming.getDescription(),
+                grooming.getStatus(),
                 grooming.getDateTime(),
                 toPetDTO(grooming.getPet())
         );

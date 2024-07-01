@@ -22,6 +22,8 @@ public class Grooming {
     private BigDecimal price;
     private String description;
     private LocalDateTime dateTime;
+    @Enumerated(EnumType.STRING)
+    private Status status;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pet_id", nullable = false)
     private Pet pet;

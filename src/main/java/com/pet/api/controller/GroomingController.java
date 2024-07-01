@@ -1,9 +1,6 @@
 package com.pet.api.controller;
 
-import com.pet.api.domain.grooming.Grooming;
-import com.pet.api.domain.grooming.GroomingMapper;
-import com.pet.api.domain.grooming.GroomingRequestDTO;
-import com.pet.api.domain.grooming.GroomingResponseDTO;
+import com.pet.api.domain.grooming.*;
 import com.pet.api.service.GroomingService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +23,7 @@ public class GroomingController {
         
 
         if (grooming == null) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Horário não disponível para agendamento!");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Horário não disponível para agendamento!");
         }
 
         GroomingResponseDTO groomingResponseDTO = GroomingMapper.toGroomingDTO(grooming);
@@ -44,6 +41,28 @@ public class GroomingController {
     public ResponseEntity<GroomingResponseDTO> getGroomingById(@PathVariable Long id) {
         Grooming grooming = groomingService.findGroomingById(id);
         GroomingResponseDTO groomingResponseDTO = GroomingMapper.toGroomingDTO(grooming);
+        return ResponseEntity.status(HttpStatus.OK).body(groomingResponseDTO);
+    }
+
+    @PutMapping("date/{id}")
+    public ResponseEntity<?> updateGroomingDate(@PathVariable Long id, @Valid @RequestBody GroomingUpdateDTO groomingUpdateDTO){
+        GroomingResponseDTO groomingResponseDTO = groomingService.changeDate(id, groomingUpdateDTO);
+
+        if (groomingResponseDTO == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Horário não disponível para agendamento!");
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(groomingResponseDTO);
+    }
+
+    @PutMapping("status/{id}")
+    public ResponseEntity<?> changeStatus(@PathVariable Long id){
+        GroomingResponseDTO groomingResponseDTO = groomingService.changeStatus(id);
+
+        if (groomingResponseDTO == null) {
+            return ResponseEntity.badRequest().body("Serviço já possui o status CONCLUIDO!");
+        }
+
         return ResponseEntity.status(HttpStatus.OK).body(groomingResponseDTO);
     }
 }
