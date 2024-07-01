@@ -1,0 +1,8 @@
+CREATE TABLE pet(
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    age INTEGER NOT NULL,
+    breed VARCHAR(50) NOT NULL,
+    tutor_id BIGINT,
+    FOREIGN KEY (tutor_id) REFERENCES tutors(id)
+);

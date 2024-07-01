@@ -1,0 +1,1 @@
+ALTER TABLE tutors MODIFY COLUMN phoneNumber VARCHAR(20) DEFAULT '';
