@@ -39,4 +39,11 @@ public class GroomingController {
                                           @RequestParam(defaultValue = "10") Integer size) {
         return groomingService.findAllGroomings(page, size);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<GroomingResponseDTO> getGroomingById(@PathVariable Long id) {
+        Grooming grooming = groomingService.findGroomingById(id);
+        GroomingResponseDTO groomingResponseDTO = GroomingMapper.toGroomingDTO(grooming);
+        return ResponseEntity.status(HttpStatus.OK).body(groomingResponseDTO);
+    }
 }

@@ -5,6 +5,7 @@ import com.pet.api.domain.grooming.GroomingMapper;
 import com.pet.api.domain.grooming.GroomingRequestDTO;
 import com.pet.api.domain.grooming.GroomingResponseDTO;
 import com.pet.api.domain.pet.Pet;
+import com.pet.api.exception.GroomingNotFoundException;
 import com.pet.api.repository.GroomingRepository;
 import com.pet.api.repository.PetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,5 +48,9 @@ public class GroomingService {
         Pageable pageable = PageRequest.of(page, size, Sort.Direction.ASC, "dateTime");
         Page<Grooming> groomings = groomingRepository.findAll(pageable);
         return groomings.map(GroomingMapper::toGroomingDTO);
+    }
+
+    public Grooming findGroomingById(Long id) {
+        return groomingRepository.findById(id).orElseThrow(() -> new GroomingNotFoundException(id));
     }
 }

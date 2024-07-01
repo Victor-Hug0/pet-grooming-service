@@ -16,4 +16,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleTutorNotFoundException(TutorNotFoundException e) {
         return ResponseEntity.badRequest().body(e.getMessage());
     }
+
+    @ExceptionHandler(GroomingNotFoundException.class)
+    public ResponseEntity<String> handleGroomingNotFoundException(GroomingNotFoundException e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
+    }
 }
