@@ -1,8 +1,10 @@
 package com.pet.api.service;
 
+import com.pet.api.domain.DTOMapper;
 import com.pet.api.domain.pet.PetPUTRequestDTO;
 import com.pet.api.domain.pet.PetRequestDTO;
 import com.pet.api.domain.pet.Pet;
+import com.pet.api.domain.pet.PetResponseDTO;
 import com.pet.api.domain.tutor.Tutor;
 import com.pet.api.exception.PetNotFoundException;
 import com.pet.api.exception.TutorNotFoundException;
@@ -36,9 +38,10 @@ public class PetService {
         return petRepository.save(pet);
     }
 
-    public Page<Pet> findAllPets(int page, int size) {
+    public Page<PetResponseDTO> findAllPets(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.Direction.ASC, "name");
-        return petRepository.findAll(pageable);
+        Page<Pet> pets = petRepository.findAll(pageable);
+        return pets.map(DTOMapper::toPetDTO);
     }
 
     public Pet updatePet(Long id, PetPUTRequestDTO data) {

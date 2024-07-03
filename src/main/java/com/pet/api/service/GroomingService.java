@@ -1,5 +1,6 @@
 package com.pet.api.service;
 
+import com.pet.api.domain.DTOMapper;
 import com.pet.api.domain.grooming.*;
 import com.pet.api.domain.pet.Pet;
 import com.pet.api.exception.GroomingNotFoundException;
@@ -45,7 +46,7 @@ public class GroomingService {
     public Page<GroomingResponseDTO> findAllGroomings(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.Direction.ASC, "dateTime");
         Page<Grooming> groomings = groomingRepository.findAll(pageable);
-        return groomings.map(GroomingMapper::toGroomingDTO);
+        return groomings.map(DTOMapper::toGroomingDTO);
     }
 
     public Grooming findGroomingById(Long id) {
@@ -58,7 +59,7 @@ public class GroomingService {
         if (grooming.getStatus().equals(Status.AGENDADO)){
             grooming.setStatus(Status.CONCLUIDO);
             groomingRepository.save(grooming);
-            return GroomingMapper.toGroomingDTO(grooming);
+            return DTOMapper.toGroomingDTO(grooming);
         }
 
         return null;
@@ -70,7 +71,7 @@ public class GroomingService {
         if (isAvailable(groomingUpdateDTO.localDateTime())){
             grooming.setDateTime(groomingUpdateDTO.localDateTime());
             groomingRepository.save(grooming);
-            return GroomingMapper.toGroomingDTO(grooming);
+            return DTOMapper.toGroomingDTO(grooming);
         }
 
         return null;

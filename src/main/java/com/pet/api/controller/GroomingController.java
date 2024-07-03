@@ -1,5 +1,6 @@
 package com.pet.api.controller;
 
+import com.pet.api.domain.DTOMapper;
 import com.pet.api.domain.grooming.*;
 import com.pet.api.service.GroomingService;
 import jakarta.validation.Valid;
@@ -26,7 +27,7 @@ public class GroomingController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Horário não disponível para agendamento!");
         }
 
-        GroomingResponseDTO groomingResponseDTO = GroomingMapper.toGroomingDTO(grooming);
+        GroomingResponseDTO groomingResponseDTO = DTOMapper.toGroomingDTO(grooming);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(groomingResponseDTO);
     }
@@ -40,7 +41,7 @@ public class GroomingController {
     @GetMapping("/{id}")
     public ResponseEntity<GroomingResponseDTO> getGroomingById(@PathVariable Long id) {
         Grooming grooming = groomingService.findGroomingById(id);
-        GroomingResponseDTO groomingResponseDTO = GroomingMapper.toGroomingDTO(grooming);
+        GroomingResponseDTO groomingResponseDTO = DTOMapper.toGroomingDTO(grooming);
         return ResponseEntity.status(HttpStatus.OK).body(groomingResponseDTO);
     }
 

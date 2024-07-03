@@ -29,7 +29,7 @@ public class PetController {
     }
 
     @GetMapping
-    public Page<Pet> getAllPets(@RequestParam(defaultValue = "0") Integer page,
+    public Page<PetResponseDTO> getAllPets(@RequestParam(defaultValue = "0") Integer page,
                                 @RequestParam(defaultValue = "10") Integer size) {
         return petService.findAllPets(page, size);
     }
