@@ -65,4 +65,13 @@ public class GroomingController {
 
         return ResponseEntity.status(HttpStatus.OK).body(groomingResponseDTO);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteGrooming(@PathVariable Long id) {
+        if (groomingService.deleteGrooming(id)) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+
+        return ResponseEntity.badRequest().body("Não é possível excluir um serviço com status CONCLUIDO!");
+    }
 }

@@ -75,4 +75,14 @@ public class GroomingService {
 
         return null;
     }
+
+    public boolean deleteGrooming(Long id) {
+        Grooming grooming = findGroomingById(id);
+        if (grooming.getStatus() == Status.AGENDADO){
+            groomingRepository.deleteById(id);
+            return true;
+        }
+
+        return false;
+    }
 }
